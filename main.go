@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -81,5 +82,5 @@ func main() {
 	}
 
 	url := makeGist(strings.Join(body, ""), fileName)
-	println(url)
+	fmt.Println(url)
 }

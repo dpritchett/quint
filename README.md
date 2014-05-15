@@ -15,7 +15,6 @@ https://gist.github.com/2592adc620f2c019b1ea
 
 $ quint main.go 
 https://gist.github.com/2cc21997dee4d12a65e9
- $ 
 ```
 
 ## WHere

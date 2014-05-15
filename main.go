@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/google/go-github/github"
@@ -14,7 +15,7 @@ func makeGist(fileBody, fileName string) string {
 	if fileName == "" {
 		fileName = "File one"
 	}
-	gistFilename := github.GistFilename(fileName)
+	gistFilename := github.GistFilename(filepath.Base(fileName))
 	isPublic := false
 	desc := ""
 	gf := github.GistFile{Content: &fileBody}

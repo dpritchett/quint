@@ -13,9 +13,8 @@
 $ cat main.go | quint
 https://gist.github.com/2592adc620f2c019b1ea
 
- $ quint main.go 
+$ quint main.go 
 https://gist.github.com/2cc21997dee4d12a65e9
-
  $ 
 ```
 

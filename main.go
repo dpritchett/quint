@@ -10,11 +10,15 @@ import (
 	"github.com/google/go-github/github"
 )
 
-func makeGist(fileBody string) string {
+func makeGist(fileBody, fileName string) string {
+	if fileName == "" {
+		fileName = "File one"
+	}
+	gistFilename := github.GistFilename(fileName)
 	isPublic := false
 	desc := ""
 	gf := github.GistFile{Content: &fileBody}
-	files := map[github.GistFilename]github.GistFile{"file_one": gf}
+	files := map[github.GistFilename]github.GistFile{gistFilename: gf}
 
 	newGist := &github.Gist{
 		Files:       files,
@@ -31,9 +35,7 @@ func makeGist(fileBody string) string {
 	return *gist.HTMLURL
 }
 
-func getStringsFromStdin() []string {
-	reader := bufio.NewReader(os.Stdin)
-
+func getStringsFromReader(reader *bufio.Reader) []string {
 	result := make([]string, 0)
 
 	for {
@@ -50,7 +52,33 @@ func getStringsFromStdin() []string {
 	return result
 }
 
+func stdInToString() []string {
+	reader := bufio.NewReader(os.Stdin)
+	return getStringsFromReader(reader)
+}
+
+func fileToString(fileName string) []string {
+	file, err := os.Open(os.Args[1])
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	reader := bufio.NewReader(file)
+	return getStringsFromReader(reader)
+}
+
 func main() {
-	body := getStringsFromStdin()
-	log.Printf(makeGist(strings.Join(body, "\n")))
+	var body []string
+	fileName := ""
+
+	if len(os.Args) > 1 {
+		fileName = os.Args[1]
+		body = fileToString(fileName)
+	} else {
+		body = stdInToString()
+	}
+
+	url := makeGist(strings.Join(body, ""), fileName)
+	println(url)
 }
